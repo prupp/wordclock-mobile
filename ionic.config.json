@@ -1,0 +1,8 @@
+{
+  "name": "wordclock-mobile",
+  "app_id": "",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
