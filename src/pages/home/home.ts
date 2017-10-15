@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { device } from '../../data/device';
+import { DeviceService } from '../../services/device-service/device-service';
 
 @Component({
   selector: 'page-home',
@@ -9,7 +10,7 @@ import { device } from '../../data/device';
 })
 export class HomePage {
 
-  private devices: Array<device> = [
+  devices: Array<device> = [
     {
       icon: '/assets/img/wc-thumb.png',
       name: 'Wordclock',
@@ -18,12 +19,22 @@ export class HomePage {
     }
   ];
 
-  constructor(public navCtrl: NavController) {
+  constructor(
+    public navCtrl: NavController,
+    private deviceService: DeviceService,
+  ) {
 
   }
 
   openSetupModal() {
-    
+    this.deviceService.scan().subscribe(
+      data => {
+        console.log('scan data:', data);
+      },
+      error => {
+        console.log('scan error', error);
+      }
+    )
   }
 
 }
