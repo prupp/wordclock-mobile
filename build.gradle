@@ -38,4 +38,4 @@ task ionic(type: NpmTask) {
   args = argsList
 }
 
-buildAndroid.dependsOn(cleanProject, npm_prune, npm_install)
+buildAndroid.dependsOn(cleanProject, npm_cache_clean, npm_prune, npm_install)
