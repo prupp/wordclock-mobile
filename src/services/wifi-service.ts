@@ -1,11 +1,6 @@
-import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
-import 'rxjs/add/operator/map';
-
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
 import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import { SoftAP, SoftAPOptions } from 'softap-setup-ts/lib/SoftAP';
 
 @Injectable()
 export class WifiService {

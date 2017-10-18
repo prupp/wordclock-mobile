@@ -13,7 +13,7 @@ export class HomePage {
 
   devices: Array<device> = [
     {
-      icon: '/assets/img/wc-thumb.png',
+      icon: 'assets/img/wc-thumb.png',
       name: 'Wordclock',
       description: 'lorem ipsum dolor sit amet',
       online: true

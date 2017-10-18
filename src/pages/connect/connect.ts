@@ -21,6 +21,10 @@ export class ConnectPage implements OnInit {
   }
 
   ngOnInit() {
+    this.scanNetworks();
+  }
+
+  scanNetworks() {
     this.wifiService.scan().then(
       data => {
         console.log('scan data:', data);
