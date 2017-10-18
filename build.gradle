@@ -9,12 +9,33 @@ node {
   nodeModulesDir = file("${project.projectDir}")
 }
 
+def addArgs(argsList) {
+  if(project.hasProperty('args')) {
+    print "With args: "
+    println args
+    def argsSplit = args.split(" ")
+    argsSplit.each {
+      argsList << it
+    }
+  }
+  return argsList
+}
+
 task cleanProject(type: Delete) {
   delete './platforms', './plugins', './www', '/node_modules', fileTree(dir: './' , include: 'npm-debug.log*')
 }
 
 task buildAndroid(type: NpmTask) {
   args = ['run', 'buildAndroid']
+}
+
+task ionic(type: NpmTask) {
+  def argsList = ['run', 'ionic', '--']
+  println("Run Ionic CLI Command")
+ 
+  argsList = addArgs(argsList);
+ 
+  args = argsList
 }
 
 buildAndroid.dependsOn(cleanProject, npm_prune, npm_install)
