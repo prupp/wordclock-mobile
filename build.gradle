@@ -1,0 +1,20 @@
+plugins {
+  id "com.moowork.node" version "1.2.0"
+}
+
+node {
+  version = '7.10.1'
+  npmVersion = '4.2.0'
+  download = true
+  nodeModulesDir = file("${project.projectDir}")
+}
+
+task cleanProject(type: Delete) {
+  delete './platforms', './plugins', './www', '/node_modules', fileTree(dir: './' , include: 'npm-debug.log*')
+}
+
+task buildAndroid(type: NpmTask) {
+  args = ['run', 'buildAndroid']
+}
+
+buildAndroid.dependsOn(cleanProject, npm_prune, npm_install)
