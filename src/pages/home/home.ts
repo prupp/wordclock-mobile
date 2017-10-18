@@ -1,8 +1,9 @@
+import { ConnectPage } from '../connect/connect';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 
 import { device } from '../../data/device';
-import { DeviceService } from '../../services/device-service/device-service';
+import { DeviceService } from '../../services/device-service';
 
 @Component({
   selector: 'page-home',
@@ -20,21 +21,16 @@ export class HomePage {
   ];
 
   constructor(
-    public navCtrl: NavController,
+    private navCtrl: NavController,
     private deviceService: DeviceService,
+    private modalController: ModalController,
   ) {
 
   }
 
   openSetupModal() {
-    this.deviceService.scan().subscribe(
-      data => {
-        console.log('scan data:', data);
-      },
-      error => {
-        console.log('scan error', error);
-      }
-    )
+    const modal = this.modalController.create(ConnectPage);
+    modal.present();
   }
 
 }

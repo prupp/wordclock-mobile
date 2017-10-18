@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Verbinden
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list *ngIf="networks">
+    <ion-item *ngFor="let network of networks" tappable (click)="connect(network)">
+      <h2>{{network.SSID}}</h2>
+      <ion-icon name="ios-wifi" item-end color="secondary"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>

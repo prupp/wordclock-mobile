@@ -12,7 +12,15 @@ export class DeviceService {
   private softAP: SoftAP;
 
   constructor(private http: HttpClient) {
-    this.softAP = new SoftAP({protocol: 'tcp'});
+    this.softAP = new SoftAP({
+      host: '192.168.0.1',
+      keepAlive: true,
+      timeout: 8000,
+      noDelay: true,
+      channel: 6,
+      protocol: 'tcp',
+      port: 5609
+    });
   }
 
   /**

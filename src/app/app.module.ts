@@ -1,18 +1,22 @@
+import { ConnectPage } from '../pages/connect/connect';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { Hotspot } from '@ionic-native/hotspot';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { HomePage } from '../pages/home/home';
-import { DeviceService } from '../services/device-service/device-service';
+import { DeviceService } from '../services/device-service';
+import { WifiService } from '../services/wifi-service';
 import { MyApp } from './app.component';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    ConnectPage
   ],
   imports: [
     BrowserModule,
@@ -22,13 +26,16 @@ import { MyApp } from './app.component';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    ConnectPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DeviceService
+    DeviceService,
+    WifiService,
+    Hotspot
   ]
 })
 export class AppModule {}
