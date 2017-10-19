@@ -11,7 +11,7 @@
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
     "ionic": "ionic",
-    "buildAndroid": "ionic cordova build android --device --release"
+    "buildAndroid": "ionic cordova build android --device"
   },
   "dependencies": {
     "@angular/common": "4.4.3",
