@@ -25,13 +25,21 @@ export class ConnectPage implements OnInit {
   }
 
   scanNetworks() {
+    const loading = this.showLoading();
     this.wifiService.scan().then(
       data => {
+        loading.dismiss();
         console.log('scan data:', data);
-        this.networks = data;
+        if (data && data instanceof Array && data.length > 0) {
+          this.networks = data.filter( network => {
+            const ssid = network.SSID.toLowerCase();
+            return ssid.startsWith('photon') || ssid.startsWith('core') || ssid.startsWith('electron');
+          });
+        }
       }
     ).catch(
       error => {
+        loading.dismiss();
         console.log('scan error', error);
       }
     );
@@ -51,7 +59,7 @@ export class ConnectPage implements OnInit {
     }
   }
 
-  private showLoading(message: string): Loading {
+  private showLoading(message?: string): Loading {
     const loading = this.loadingController.create({
       content: message
     });

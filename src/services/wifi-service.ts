@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class WifiService {
@@ -10,7 +9,7 @@ export class WifiService {
 
   /**
    * Scans for nearby wifi networks
-   * @return {Observable<any>}
+   * @return {Promise<HotspotNetwork[]>}
    */
   scan(): Promise<HotspotNetwork[]> {
     return this.hotspot.scanWifi();
