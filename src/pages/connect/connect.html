@@ -7,12 +7,14 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-fab top right edge>
-    <button ion-fab mini (click)="scanNetworks()">
-      <ion-icon name="refresh"></ion-icon>
-    </button>
-  </ion-fab>
-  <ion-list *ngIf="networks">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <p *ngIf="!networks || networks.length === 0">
+    LED des Prozessors auf der Rückseite der Wordclock muss blau blinken. Ist dies nicht der Fall, muss der Setup-Button 3 Sekunden
+    lang gedrückt werden.
+  </p>
+  <ion-list *ngIf="networks && networks.length > 0">
     <ion-item *ngFor="let network of networks" tappable (click)="connect(network)">
       <h2>{{network.SSID}}</h2>
       <ion-icon name="ios-wifi" item-end color="secondary"></ion-icon>

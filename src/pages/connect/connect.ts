@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HotspotNetwork } from '@ionic-native/hotspot';
-import { Loading, LoadingController, ViewController } from 'ionic-angular';
+import { Loading, LoadingController, Refresher, Toast, ToastController } from 'ionic-angular';
 
 import { WifiService } from '../../services/wifi-service';
 
@@ -13,9 +13,9 @@ export class ConnectPage implements OnInit {
   private networks: HotspotNetwork[];
 
   constructor(
-    private viewController: ViewController,
     private wifiService: WifiService,
     private loadingController: LoadingController,
+    private toastController: ToastController,
   ) {
 
   }
@@ -24,11 +24,13 @@ export class ConnectPage implements OnInit {
     this.scanNetworks();
   }
 
-  scanNetworks() {
-    const loading = this.showLoading();
+  doRefresh(refresher) {
+    this.scanNetworks(refresher);
+  }
+
+  scanNetworks(refresher?: Refresher) {
     this.wifiService.scan().then(
       data => {
-        loading.dismiss();
         console.log('scan data:', data);
         if (data && data instanceof Array && data.length > 0) {
           this.networks = data.filter( network => {
@@ -39,10 +41,14 @@ export class ConnectPage implements OnInit {
       }
     ).catch(
       error => {
-        loading.dismiss();
         console.log('scan error', error);
       }
-    );
+    ).then( () => {
+      // finally
+      if (refresher) {
+        refresher.complete();
+      }
+    });
   }
 
   connect(network: HotspotNetwork) {
@@ -53,7 +59,8 @@ export class ConnectPage implements OnInit {
         console.log('connected to', network.SSID);
         loading.dismiss();
       }).catch( err => {
-        console.log('error connecting to networ:', err);
+        console.log('error connecting to network:', err);
+        this.showNotification('Verbindung konnte nicht hergestellt werden: ' + err);
         loading.dismiss();
       });
     }
@@ -65,6 +72,15 @@ export class ConnectPage implements OnInit {
     });
     loading.present();
     return loading;
+  }
+
+  private showNotification(message: string, duration: number = 3000): Toast {
+    const toast = this.toastController.create({
+      message: message,
+      duration: duration
+    });
+    toast.present();
+    return toast;
   }
 
 }
