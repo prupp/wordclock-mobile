@@ -130,9 +130,8 @@ export class SetupDevicePage implements OnInit {
       this.deviceService.configure(network, password).subscribe(data => {
         console.log('connected to', network.ssid);
         loading.dismiss();
-        this.deviceService.connect().subscribe(() => {
-          this.navController.popToRoot();
-        });
+        this.deviceService.connect().subscribe();
+        this.navController.popToRoot();
       }, err => {
         console.log('error connecting to network:', err);
         this.showNotification('Verbindung konnte nicht hergestellt werden: ' + err);

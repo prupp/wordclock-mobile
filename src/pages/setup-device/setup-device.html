@@ -6,14 +6,16 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <p *ngIf="deviceInfo" padding>
     Verbindung zur Wordclock wurde erfolgreich hergestellt ({{deviceInfo.id}}). Bitte wähle dein WiFi aus, um die Wordclock On-The-Line zu stellen.
   </p>
-  <ion-spinner *ngIf="!networks" padding text-center></ion-spinner>
+  <div class="spinner-container">
+    <ion-spinner *ngIf="!networks"></ion-spinner>
+  </div>
   <ion-list *ngIf="networks" padding>
     <ion-item *ngFor="let network of networks" tappable (click)="enterPassword(network)">
       <h2>{{network.ssid}}</h2>
