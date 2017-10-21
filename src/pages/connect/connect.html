@@ -6,11 +6,11 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <p *ngIf="!networks || networks.length === 0">
+  <p *ngIf="!networks || networks.length === 0" padding>
     LED des Prozessors auf der Rückseite der Wordclock muss blau blinken. Ist dies nicht der Fall, muss der Setup-Button 3 Sekunden
     lang gedrückt werden.
   </p>

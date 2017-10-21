@@ -26,6 +26,7 @@ export class ConnectPage implements OnInit {
     this.scanNetworks();
   }
 
+
   doRefresh(refresher) {
     setTimeout(
       this.scanNetworks(refresher),
@@ -39,7 +40,7 @@ export class ConnectPage implements OnInit {
         if (data && data instanceof Array && data.length > 0) {
           this.networks = data.filter(network => {
             const ssid = network.SSID.toLowerCase();
-            return ssid.startsWith('photon') ||  ssid.startsWith('core') || ssid.startsWith('electron');
+            return ssid.startsWith('photon') || ssid.startsWith('core') || ssid.startsWith('electron');
           });
         }
       }
