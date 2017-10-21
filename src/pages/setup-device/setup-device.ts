@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, Toast, ToastController, Refresher } from 'ionic-angular';
+import {
+    AlertController,
+    Loading,
+    LoadingController,
+    NavController,
+    Refresher,
+    Toast,
+    ToastController,
+} from 'ionic-angular';
 
 import { DeviceService } from '../../services/device-service';
 import { WifiService } from '../../services/wifi-service';
@@ -11,12 +19,15 @@ import { WifiService } from '../../services/wifi-service';
 export class SetupDevicePage implements OnInit {
 
   private deviceInfo;
-  private accessPoints;
+  private networks;
+  private password: string;
 
   constructor(
     private navController: NavController,
     private wifiService: WifiService,
     private toastController: ToastController,
+    private loadingController: LoadingController,
+    private alertController: AlertController,
     private deviceService: DeviceService,
   ) {
 
@@ -24,31 +35,52 @@ export class SetupDevicePage implements OnInit {
 
   ngOnInit() {
     this.getDeviceInfo();
-    this.scanAPs();
   }
 
   doRefresh(refresher) {
-    this.scanAPs(refresher);
+    setTimeout(
+      this.scanAPs(refresher),
+      2000);
   }
 
   getDeviceInfo() {
+    const loading = this.showLoading('Verbinden..');
+
     this.deviceService.deviceInfo().subscribe(
       data => {
         console.log('device info:', data);
         this.deviceInfo = data;
+        // connected to device --> get public key to start device setup (The public key must be obtained from the device before it can be successfully configured)
+        this.getPublicKey();
       },
       error => {
         console.log('device info error:', error);
         this.showNotification('Device Info error: ' + error);
+      },
+      () => {
+        loading.dismiss();
       }
     );
   }
 
-  scanAPs(refresher?: Refresher) {
+  private getPublicKey() {
+    this.deviceService.getPublicKey().subscribe(
+      data => {
+        console.log('public key received:', data);
+        this.scanAPs();
+      },
+      error => {
+        console.log('error getting public key:', error);
+        this.showNotification('Public Key error: ' + error);
+      }
+    );
+  }
+
+  private scanAPs(refresher?: Refresher) {
     this.deviceService.scan().subscribe(
       data => {
         console.log('scan:', data);
-        this.accessPoints = data;
+        this.networks = data;
       },
       error => {
         console.log('scan error:', error);
@@ -60,6 +92,59 @@ export class SetupDevicePage implements OnInit {
         }
       }
     );
+  }
+
+  enterPassword(network) {
+    let prompt = this.alertController.create({
+      title: 'Login',
+      message: 'Bitte Passwort für das Netzwerk ' + network.ssid + ' eingeben:',
+      inputs: [
+        {
+          name: 'password',
+          placeholder: 'Password',
+          type: 'password'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            this.connect(network, data.password);
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  private connect(network, password) {
+    if (network) {
+      const loading = this.showLoading('Verbinden..');
+
+      this.deviceService.configure(network, password).subscribe(data => {
+        console.log('connected to', network.ssid);
+        loading.dismiss();
+        this.navController.popToRoot();
+      }, err => {
+        console.log('error connecting to network:', err);
+        this.showNotification('Verbindung konnte nicht hergestellt werden: ' + err);
+        loading.dismiss();
+      });
+    }
+  }
+
+  private showLoading(message?: string): Loading {
+    const loading = this.loadingController.create({
+      content: message
+    });
+    loading.present();
+    return loading;
   }
 
   private showNotification(message: string, duration: number = 3000): Toast {

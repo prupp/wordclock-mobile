@@ -10,10 +10,13 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <p>
-    {{deviceInfo}}
+  <p *ngIf="deviceInfo">
+    Verbindung zur Wordclock wurde erfolgreich hergestellt ({{deviceInfo.id}}). Bitte wähle dein WiFi aus, um die Wordclock On-The-Line zu stellen.
   </p>
-  <p>
-    {{accessPoints}}
-  </p>
+  <ion-list *ngIf="networks" paddin>
+    <ion-item *ngFor="let network of networks" tappable (click)="enterPassword(network)">
+      <h2>{{network.ssid}}</h2>
+      <ion-icon name="ios-wifi" item-end color="secondary"></ion-icon>
+    </ion-item>
+  </ion-list>
 </ion-content>

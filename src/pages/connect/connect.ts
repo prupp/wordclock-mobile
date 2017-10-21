@@ -27,7 +27,9 @@ export class ConnectPage implements OnInit {
   }
 
   doRefresh(refresher) {
-    this.scanNetworks(refresher);
+    setTimeout(
+      this.scanNetworks(refresher),
+      2000);
   }
 
   scanNetworks(refresher?: Refresher) {
@@ -35,9 +37,9 @@ export class ConnectPage implements OnInit {
       data => {
         console.log('scan data:', data);
         if (data && data instanceof Array && data.length > 0) {
-          this.networks = data.filter( network => {
+          this.networks = data.filter(network => {
             const ssid = network.SSID.toLowerCase();
-            return ssid.startsWith('photon') || ssid.startsWith('core') || ssid.startsWith('electron');
+            return ssid.startsWith('photon') ||  ssid.startsWith('core') || ssid.startsWith('electron');
           });
         }
       }
@@ -45,23 +47,23 @@ export class ConnectPage implements OnInit {
       error => {
         console.log('scan error', error);
       }
-    ).then( () => {
-      // finally
-      if (refresher) {
-        refresher.complete();
-      }
-    });
+      ).then(() => {
+        // finally
+        if (refresher) {
+          refresher.complete();
+        }
+      });
   }
 
   connect(network: HotspotNetwork) {
     if (network) {
       const loading = this.showLoading('Verbinden..');
 
-      this.wifiService.connect(network.SSID).then( data => {
+      this.wifiService.connect(network.SSID).then(data => {
         console.log('connected to', network.SSID);
         loading.dismiss();
         this.navController.push(SetupDevicePage);
-      }).catch( err => {
+      }).catch(err => {
         console.log('error connecting to network:', err);
         this.showNotification('Verbindung konnte nicht hergestellt werden: ' + err);
         loading.dismiss();

@@ -13,13 +13,13 @@ export class DeviceService {
 
   constructor(private http: HttpClient) {
     this.softAP = new SoftAP({
-      host: '192.168.0.1',
-      keepAlive: true,
-      timeout: 8000,
-      noDelay: true,
-      channel: 6,
-      protocol: 'tcp',
-      port: 5609
+      "host": "192.168.0.1",
+      "keepAlive": true,
+      "timeout": 20000,
+      "noDelay": true,
+      "channel": 6,
+      "protocol": "http",
+      "port": 80
     });
   }
 
@@ -43,6 +43,33 @@ export class DeviceService {
   deviceInfo(): Observable<any> {
     return Observable.create((observer: Observer<any>) => {
       this.softAP.deviceInfo((err, data) => {
+        if (err) {
+          observer.error(err);
+        } else {
+          observer.next(data);
+        }
+        observer.complete();
+      })
+    });
+  }
+
+  getPublicKey(): Observable<any> {
+    return Observable.create((observer: Observer<any>) => {
+      this.softAP.publicKey((err, data) => {
+        if (err) {
+          observer.error(err);
+        } else {
+          observer.next(data);
+        }
+        observer.complete();
+      })
+    });
+  }
+
+  configure(network, password): Observable<any> {
+    return Observable.create((observer: Observer<any>) => {
+      network.password = password;
+      this.softAP.configure(network, (err, data) => {
         if (err) {
           observer.error(err);
         } else {
