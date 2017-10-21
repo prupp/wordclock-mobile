@@ -1,4 +1,3 @@
-import { ConnectPage } from '../pages/connect/connect';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -7,7 +6,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
+import { ConnectPage } from '../pages/connect/connect';
 import { HomePage } from '../pages/home/home';
+import { SetupDevicePage } from '../pages/setup-device/setup-device';
 import { DeviceService } from '../services/device-service';
 import { WifiService } from '../services/wifi-service';
 import { MyApp } from './app.component';
@@ -16,7 +17,8 @@ import { MyApp } from './app.component';
   declarations: [
     MyApp,
     HomePage,
-    ConnectPage
+    ConnectPage,
+    SetupDevicePage
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,8 @@ import { MyApp } from './app.component';
   entryComponents: [
     MyApp,
     HomePage,
-    ConnectPage
+    ConnectPage,
+    SetupDevicePage
   ],
   providers: [
     StatusBar,

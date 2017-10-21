@@ -1,6 +1,7 @@
+import { SetupDevicePage } from '../setup-device/setup-device';
 import { Component, OnInit } from '@angular/core';
 import { HotspotNetwork } from '@ionic-native/hotspot';
-import { Loading, LoadingController, Refresher, Toast, ToastController } from 'ionic-angular';
+import { Loading, LoadingController, NavController, Refresher, Toast, ToastController } from 'ionic-angular';
 
 import { WifiService } from '../../services/wifi-service';
 
@@ -13,6 +14,7 @@ export class ConnectPage implements OnInit {
   private networks: HotspotNetwork[];
 
   constructor(
+    private navController: NavController,
     private wifiService: WifiService,
     private loadingController: LoadingController,
     private toastController: ToastController,
@@ -58,6 +60,7 @@ export class ConnectPage implements OnInit {
       this.wifiService.connect(network.SSID).then( data => {
         console.log('connected to', network.SSID);
         loading.dismiss();
+        this.navController.push(SetupDevicePage);
       }).catch( err => {
         console.log('error connecting to network:', err);
         this.showNotification('Verbindung konnte nicht hergestellt werden: ' + err);

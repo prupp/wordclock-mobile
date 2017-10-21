@@ -1,9 +1,8 @@
-import { ConnectPage } from '../connect/connect';
 import { Component } from '@angular/core';
-import { ModalController, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { device } from '../../data/device';
-import { DeviceService } from '../../services/device-service';
+import { ConnectPage } from '../connect/connect';
 
 @Component({
   selector: 'page-home',
@@ -22,15 +21,12 @@ export class HomePage {
 
   constructor(
     private navCtrl: NavController,
-    private deviceService: DeviceService,
-    private modalController: ModalController,
   ) {
 
   }
 
   openSetupModal() {
-    const modal = this.modalController.create(ConnectPage);
-    modal.present();
+    this.navCtrl.push(ConnectPage);
   }
 
 }

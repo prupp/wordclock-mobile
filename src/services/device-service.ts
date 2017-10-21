@@ -37,7 +37,20 @@ export class DeviceService {
         }
         observer.complete();
       })
-    })
+    });
+  }
+
+  deviceInfo(): Observable<any> {
+    return Observable.create((observer: Observer<any>) => {
+      this.softAP.deviceInfo((err, data) => {
+        if (err) {
+          observer.error(err);
+        } else {
+          observer.next(data);
+        }
+        observer.complete();
+      })
+    });
   }
 
 }
