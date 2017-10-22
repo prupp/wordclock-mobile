@@ -10,7 +10,7 @@ import {
 } from 'ionic-angular';
 
 import { DeviceService } from '../../services/device-service';
-import { WifiService } from '../../services/wifi-service';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-setup-device',
@@ -20,11 +20,9 @@ export class SetupDevicePage implements OnInit {
 
   private deviceInfo;
   private networks;
-  private password: string;
 
   constructor(
     private navController: NavController,
-    private wifiService: WifiService,
     private toastController: ToastController,
     private loadingController: LoadingController,
     private alertController: AlertController,
@@ -44,8 +42,6 @@ export class SetupDevicePage implements OnInit {
   }
 
   getDeviceInfo() {
-    const loading = this.showLoading('Verbinden..');
-
     this.deviceService.deviceInfo().subscribe(
       data => {
         console.log('device info:', data);
@@ -56,9 +52,6 @@ export class SetupDevicePage implements OnInit {
       error => {
         console.log('device info error:', error);
         this.showNotification('Device Info error: ' + error);
-      },
-      () => {
-        loading.dismiss();
       }
     );
   }
@@ -131,7 +124,7 @@ export class SetupDevicePage implements OnInit {
         console.log('connected to', network.ssid);
         loading.dismiss();
         this.deviceService.connect().subscribe();
-        this.navController.popToRoot();
+        this.navController.setRoot(HomePage, undefined, {animation: 'ios-transition'});
       }, err => {
         console.log('error connecting to network:', err);
         this.showNotification('Verbindung konnte nicht hergestellt werden: ' + err);

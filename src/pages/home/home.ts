@@ -25,8 +25,8 @@ export class HomePage {
 
   }
 
-  openSetupModal() {
-    this.navCtrl.push(ConnectPage);
+  addDevice() {
+    this.navCtrl.push(ConnectPage, {animation: 'ios-transition'});
   }
 
 }

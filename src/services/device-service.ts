@@ -1,17 +1,16 @@
 import 'rxjs/add/operator/map';
 
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { SoftAP, SoftAPOptions } from 'softap-setup-ts/lib/SoftAP';
+import { SoftAP } from 'softap-setup-ts/lib/SoftAP';
 
 @Injectable()
 export class DeviceService {
 
   private softAP: SoftAP;
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.softAP = new SoftAP({
       "host": "192.168.0.1",
       "keepAlive": true,
@@ -98,7 +97,7 @@ export class DeviceService {
    */
   connect(): Observable<any> {
     return Observable.create((observer: Observer<any>) => {
-      this.softAP.connect(0, (err, data) => {
+      this.softAP.connect((err, data) => {
         if (err) {
           observer.error(err);
         } else {

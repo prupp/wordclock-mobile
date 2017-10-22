@@ -28,9 +28,9 @@ export class ConnectPage implements OnInit {
 
 
   doRefresh(refresher) {
-    setTimeout(
-      this.scanNetworks(refresher),
-      2000);
+    setTimeout(() => {
+      this.scanNetworks(refresher)
+    }, 2000);
   }
 
   scanNetworks(refresher?: Refresher) {
@@ -43,12 +43,10 @@ export class ConnectPage implements OnInit {
             return ssid.startsWith('photon') || ssid.startsWith('core') || ssid.startsWith('electron');
           });
         }
-      }
-    ).catch(
+      }).catch(
       error => {
         console.log('scan error', error);
-      }
-      ).then(() => {
+      }).then(() => {
         // finally
         if (refresher) {
           refresher.complete();
@@ -63,7 +61,7 @@ export class ConnectPage implements OnInit {
       this.wifiService.connect(network.SSID).then(data => {
         console.log('connected to', network.SSID);
         loading.dismiss();
-        this.navController.push(SetupDevicePage);
+        this.navController.push(SetupDevicePage, {animation: 'ios-transition'});
       }).catch(err => {
         console.log('error connecting to network:', err);
         this.showNotification('Verbindung konnte nicht hergestellt werden: ' + err);
