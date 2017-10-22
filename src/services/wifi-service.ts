@@ -21,7 +21,12 @@ export class WifiService {
    * @param {string=''} password
    */
   connect(ssid: string, password: string = ''): Promise<any> {
-    return this.hotspot.connectToWifi(ssid, password);
+    // this is a workaround for some connection issues (https://github.com/hypery2k/cordova-hotspot-plugin/issues/57)
+    return this.hotspot.removeWifiNetwork(ssid).then(data => {
+      return this.hotspot.connectToWifi(ssid, password);
+    }).catch(erro => {
+      return this.hotspot.connectToWifi(ssid, password);
+    });
   }
 
 }
